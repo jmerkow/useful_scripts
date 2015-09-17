@@ -11,7 +11,9 @@ if len(sys.argv)==2:
 else:
     trunc=50
 buf=StringIO(sp.check_output('nvidia-smi'))
-print(buf.getvalue())
+top_buf=buf.getvalue().split('| Processes: ')[0].strip()
+cool_line=top_buf.split('\n')[-1]
+print(top_buf)
 pids = smi_parse(buf,return_details=True)
 from  datetime import datetime
 fts=datetime.fromtimestamp
@@ -28,3 +30,4 @@ for pid in pids:
         ' '.join(proc.cmdline())[:trunc]))
 #	print('\t'.join(map(str,tab[-1])))
 print(tabulate(tab,headers=['GPU','PID','PPID','UID','GPU Mem Usage','STime','CMD']))
+print(cool_line)
