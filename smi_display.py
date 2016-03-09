@@ -4,7 +4,7 @@ from __future__ import print_function
 import re,sys
 def smi_parse(in_str,return_details=False,gpu_id=-1):
     start_re=re.compile('\|\s*GPU\s*PID\s*Type\s*Process\s*name\s*Usage\s*\|')
-    gpu_pid=re.compile('\|\s+(\d*)\s+(\d+)\s+(\w+)\s+([/|\.|a-z|0-9|_]+)\s+(\d+MiB)\s+\|')
+    gpu_pid=re.compile('\|\s+(\d*)\s+(\d+)\s+(\w+)\s+(.+)\s+(\d+MiB)\s+\|')
     start=False
     pids=list()
     for line in in_str.readlines():
@@ -17,7 +17,7 @@ def smi_parse(in_str,return_details=False,gpu_id=-1):
             if gpu_id<0 or m.groups()[0]==gpu_id:
                 vals=m.groups()
                 pids.append((int(vals[0]),int(vals[1]),int(vals[-1].strip('MiB'))))
-#                 print(m.groups())
+                # print(m.groups())
     if return_details:
         return pids
     else:
